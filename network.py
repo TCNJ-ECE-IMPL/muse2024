@@ -1,3 +1,4 @@
+import math
 # numpy for arrays
 import numpy as np
 # os for file reading
@@ -6,13 +7,19 @@ import os
 import nptdms
 # pyplot for plotting vibration signals
 import matplotlib.pyplot as plt
+# Random for shuffling dataset
+import random
 # Tensorflow and keras for neural network
-#import tensorflow as tf
+import tensorflow as tf
 
+############
 # CONSTANTS:
+############
 INPUT_SIZE = 2048
 
+############
 # FUNCTIONS:
+############
 
 # get_dataset(dir): reads all tdms files in directory and adds them to an array of tuples containing input and output
 def get_dataset(dir):
@@ -45,12 +52,54 @@ def get_dataset(dir):
             index = index + INPUT_SIZE
     return dataset
 
+# Turns the shuffleable list of tuples to an easier to work with tuple of lists
+def tuplelist2listtuple(tuplist):
+    list1 = []
+    list2 = []
 
+    for item in tuplist:
+        list1.append(item[0])
+        list2.append(item[1])
+    return (list1, list2)
+
+
+#######
 # MAIN:
+#######
 
-def main():
-    # Get dataset from tdms files
-    dataset = get_dataset("./tdms_data/")
-    print(dataset)
+# Get dataset from tdms files
+dataset = get_dataset("./tdms_data/")
+# Shuffle dataset
+random.shuffle(dataset)
 
-main()
+# Partition dataset
+train_frac = 0.7
+valid_frac = 0.2
+
+train_end_index = math.floor(len(dataset) * train_frac)
+valid_end_index = train_end_index + math.floor(len(dataset) * valid_frac)
+
+(x_train, y_train) = tuplelist2listtuple(dataset[0:train_end_index])
+(x_valid, y_valid) = tuplelist2listtuple(dataset[train_end_index + 1 : valid_end_index])
+(x_test, y_text) = tuplelist2listtuple(dataset[valid_end_index + 1 : len(dataset)])
+
+
+# Model layers. Using default from tensorflow tutorial, will experiment with optuna at a later stage
+
+model = tf.keras.models.Sequential([
+  tf.keras.layers.Flatten(input_shape=(INPUT_SIZE, 1)),
+  tf.keras.layers.Dense(128, activation='relu'),
+  #tf.keras.layers.Dropout(0.2),
+  tf.keras.layers.Dense(1)
+])
+
+loss_fn = tf.keras.losses.MeanAbsoluteError(
+    reduction='sum_over_batch_size',
+    name='mean_absolute_error'
+)
+
+model.compile(optimizer='adam',
+              loss=loss_fn,
+              metrics=['accuracy'])
+
+model.fit(x_train, y_train, epochs=5)
