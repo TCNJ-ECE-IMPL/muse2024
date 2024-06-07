@@ -16,13 +16,14 @@ import tensorflow as tf
 # CONSTANTS:
 ############
 INPUT_SIZE = 2048
+USE_FFT = False
 
 ############
 # FUNCTIONS:
 ############
 
-# get_dataset(dir): reads all tdms files in directory and adds them to an array of tuples containing input and output
-def get_dataset(dir):
+# reads all tdms files in directory and adds them to an array of tuples containing input and output
+def get_base_dataset(dir):
     # dataset contains tuples of (input_data, output_data)
     dataset = []
 
@@ -42,24 +43,46 @@ def get_dataset(dir):
         while index + INPUT_SIZE < total_samples:
             # FIXME
             # Currently setting all output data to 0, we will decide how to convey this when we develop the physical testing system further
-            output_data = 0
+            output_data = np.array([0])
+
             # Input data is the fft of the selected portion of the wave input
-            input_data = np.fft.fft(channel_data[(index) : (index + INPUT_SIZE)])
+            if USE_FFT:
+                input_data_unfiltered = np.absolute(np.fft.fft(channel_data[(index) : (index + INPUT_SIZE)]))
+            else:
+                input_data_unfiltered = channel_data[(index) : (index + INPUT_SIZE)]
+            
+            # Filter out highest 1024
+            median = np.median(input_data_unfiltered)
+            input_data = np.array([])
+            for item in input_data_unfiltered:
+                if item <= median:
+                    input_data = np.append(input_data, item)
+
+            # Ensure duplicates of median do not push over the edge
+            while input_data.size > INPUT_SIZE/2:
+                for i in range(input_data.size):
+                    if input_data[i] == median:
+                        input_data = np.delete(input_data, i)
+                        break
+
             # Add data to the dataset
             data_tuple = (input_data, output_data)
             dataset.append(data_tuple)
+            
             # Increment index and repeat for next section
             index = index + INPUT_SIZE
+    
     return dataset
 
 # Turns the shuffleable list of tuples to an easier to work with tuple of lists
 def tuplelist2listtuple(tuplist):
-    list1 = []
-    list2 = []
+    num_items = len(tuplist)
+    list1 = np.empty((num_items, INPUT_SIZE))
+    list2 = np.empty((num_items, 1))
 
     for item in tuplist:
-        list1.append(item[0])
-        list2.append(item[1])
+        list1 = np.append(list1, [item[0]], axis=0)
+        list2 = np.append(list2, [item[1]], axis=0)
     return (list1, list2)
 
 
@@ -102,4 +125,4 @@ model.compile(optimizer='adam',
               loss=loss_fn,
               metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=5)
+model.fit(x_train, y_train, epochs=25)
