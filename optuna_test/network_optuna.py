@@ -10,8 +10,8 @@ import optuna
 ############
 # CONSTANTS:
 ############
-INPUT_SIZE = 2048
-USE_FFT = False
+INPUT_SIZE = 1024
+USE_FFT = True
 EPOCHS = 5
 
 ############
@@ -36,16 +36,16 @@ def get_base_dataset(dir):
         total_samples = channel_data.size
         index = 0
 
-        while index + INPUT_SIZE < total_samples:
+        while index + INPUT_SIZE * 2 < total_samples:
             # FIXME
             # Currently setting all output data to 0, we will decide how to convey this when we develop the physical testing system further
             output_data = np.array([0])
 
             # Input data is the fft of the selected portion of the wave input
             if USE_FFT:
-                input_data_unfiltered = np.absolute(np.fft.fft(channel_data[(index) : (index + INPUT_SIZE)]))
+                input_data_unfiltered = np.absolute(np.fft.fft(channel_data[(index) : (index + INPUT_SIZE * 2)]))
             else:
-                input_data_unfiltered = channel_data[(index) : (index + INPUT_SIZE)]
+                input_data_unfiltered = channel_data[(index) : (index + INPUT_SIZE * 2)]
             
             # Filter out highest 1024
             median = np.median(input_data_unfiltered)
@@ -55,7 +55,7 @@ def get_base_dataset(dir):
                     input_data = np.append(input_data, item)
 
             # Ensure duplicates of median do not push over the edge
-            while input_data.size > INPUT_SIZE/2:
+            while input_data.size > INPUT_SIZE:
                 for i in range(input_data.size):
                     if input_data[i] == median:
                         input_data = np.delete(input_data, i)
@@ -66,7 +66,7 @@ def get_base_dataset(dir):
             dataset.append(data_tuple)
             
             # Increment index and repeat for next section
-            index = index + INPUT_SIZE
+            index = index + INPUT_SIZE * 2
     
     return dataset
 
