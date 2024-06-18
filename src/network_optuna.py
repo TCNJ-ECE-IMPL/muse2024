@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import random
 import tensorflow as tf
 import optuna
+import logging
 
 ############
 # CONSTANTS:
@@ -188,6 +189,17 @@ def objective(trial):
 #######
 
 if __name__ == "__main__":
+
+    # Set up logging within experiment directory
+    logger = logging.getLogger()
+
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.FileHandler("study.log", mode="w"))
+
+    optuna.logging.enable_propagation()
+    optuna.logging.disable_default_handler()
+
+    # Create and run study
     study = optuna.create_study(direction="maximize")
     study.optimize(objective, n_trials=100)
 
