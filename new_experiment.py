@@ -11,3 +11,8 @@ while os.path.exists(exp_dir):
 os.mkdir(exp_dir)
 shutil.copytree("./src", os.path.join(exp_dir, "./src"))
 shutil.copytree("./tdms_data", os.path.join(exp_dir, "./tdms_data"))
+
+print("Running study...")
+
+study_path = os.path.join(exp_dir, "./src/network_optuna.py")
+exec(open(study_path).read())
