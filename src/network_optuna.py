@@ -43,7 +43,7 @@ def learn(model, optimizer, dataset, mode="eval"):
 # Modified from optuna example on GitHub
 def create_model(trial):
     # We optimize the numbers of layers, their units and weight decay parameter.
-    n_layers = trial.suggest_int("n_layers", 1, 3)
+    n_layers = trial.suggest_int("n_layers", 1, 25)
     weight_decay = trial.suggest_float("weight_decay", 1e-10, 1e-3, log=True)
     model = tf.keras.Sequential()
     model.add(tf.keras.layers.Flatten())
@@ -59,6 +59,9 @@ def create_model(trial):
     model.add(
         tf.keras.layers.Dense(1, kernel_regularizer=tf.keras.regularizers.l2(weight_decay))
     )
+    model_save_filename = str(trial.number) + ".keras"
+    model_save_path = os.path.join("../models", model_save_filename)
+    model.save(model_save_path)
     return model
 
 # Modified from optuna example on GitHub
