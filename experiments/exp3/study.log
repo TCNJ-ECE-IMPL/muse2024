@@ -1,0 +1,15 @@
+A new study created in memory with name: no-name-89b14c79-d664-427c-82ef-ccde23d171b3
+Trial 0 failed with parameters: {} because of the following error: ValueError('all the input arrays must have same number of dimensions, but the array at index 0 has 2 dimension(s) and the array at index 1 has 1 dimension(s)').
+Traceback (most recent call last):
+  File "/home/newuser/.local/lib/python3.10/site-packages/optuna/study/_optimize.py", line 196, in _run_trial
+    value_or_values = func(trial)
+  File "/drive/sda2/home/newuser/Muse2024/muse2024/experiments/exp3/./src/network_optuna.py", line 89, in objective
+    train_ds, valid_ds = nf.get_dataset("./tdms_data/")
+  File "/drive/sda2/home/newuser/Muse2024/muse2024/experiments/exp3/src/network_functions.py", line 80, in get_dataset
+    (x_train, y_train) = tuplelist2listtuple(dataset[0:train_end_index])
+  File "/drive/sda2/home/newuser/Muse2024/muse2024/experiments/exp3/src/network_functions.py", line 96, in tuplelist2listtuple
+    list2 = np.append(list2, [item[1]], axis=0)
+  File "/usr/local/lib/python3.10/dist-packages/numpy/lib/function_base.py", line 5618, in append
+    return concatenate((arr, values), axis=axis)
+ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 2 dimension(s) and the array at index 1 has 1 dimension(s)
+Trial 0 failed with value None.
