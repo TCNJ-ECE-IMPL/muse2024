@@ -87,7 +87,7 @@ def create_optimizer(trial):
 # Modified from optuna example on GitHub
 def objective(trial):
     # Get dataset from tdms files
-    train_ds, valid_ds = nf.get_dataset("./tdms_data/")
+    train_ds, valid_ds = nf.get_dataset("../tdms_data/")
 
     model = create_model(trial)
     optimizer = create_optimizer(trial) 
@@ -121,7 +121,7 @@ if __name__ == "__main__":
 
     # Create and run study
     study = optuna.create_study(direction="maximize")
-    study.optimize(objective, n_trials=100)
+    study.optimize(objective, n_trials=500)
 
     print("Number of finished trials: ", len(study.trials))
 

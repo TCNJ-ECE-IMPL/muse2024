@@ -40,19 +40,7 @@ def get_base_dataset(dir):
             else:
                 input_data_unfiltered = channel_data[(index) : (index + INPUT_SIZE * 2)]
             
-            # Filter out highest 1024
-            median = np.median(input_data_unfiltered)
-            input_data = np.array([])
-            for item in input_data_unfiltered:
-                if item <= median:
-                    input_data = np.append(input_data, item)
-
-            # Ensure duplicates of median do not push over the edge
-            while input_data.size > INPUT_SIZE:
-                for i in range(input_data.size):
-                    if input_data[i] == median:
-                        input_data = np.delete(input_data, i)
-                        break
+            input_data = filterHighest(input_data_unfiltered)
 
             # Add data to the dataset
             data_tuple = (input_data, output_data)
@@ -98,3 +86,20 @@ def tuplelist2listtuple(tuplist):
         l2a = np.array([item[1]])
         list2[i] = l2a
     return (list1, list2)
+
+# Filters out highest value moduli
+def filterHighest(input_data_unfiltered):
+    # Filter out highest 1024
+    median = np.median(input_data_unfiltered)
+    input_data = np.array([])
+    for item in input_data_unfiltered:
+        if item <= median:
+            input_data = np.append(input_data, item)
+
+    # Ensure duplicates of median do not push over the edge
+    while input_data.size > INPUT_SIZE:
+        for i in range(input_data.size):
+            if input_data[i] == median:
+                input_data = np.delete(input_data, i)
+                break
+    return input_data
