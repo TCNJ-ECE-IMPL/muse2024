@@ -18,7 +18,7 @@ USE_FFT = False
 #######
 
 # Get dataset from tdms files
-dataset = nf.get_base_dataset("./tdms_data/")
+dataset = nf.get_base_dataset("../tdms_data/")
 # Shuffle dataset
 random.shuffle(dataset)
 

@@ -14,4 +14,4 @@ cp -r ./tdms_data "$exp_dir/tdms_data"
 
 echo "Running script..."
 cd $exp_dir/src
-python3.10 ./src/network_optuna.py
+python3.10 ./network_optuna.py
