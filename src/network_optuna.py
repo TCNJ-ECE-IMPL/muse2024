@@ -8,6 +8,7 @@ import tensorflow as tf
 import optuna
 import logging
 import network_functions as nf
+import pathlib
 
 ############
 # CONSTANTS:
@@ -107,10 +108,13 @@ def objective(trial):
 if __name__ == "__main__":
 
     # Set up logging within experiment directory
+    temppath = pathlib.Path().resolve()
+    logpath = os.path.join(temppath, "../study.log")
+
     logger = logging.getLogger()
 
     logger.setLevel(logging.INFO)
-    logger.addHandler(logging.FileHandler("study.log", mode="w"))
+    logger.addHandler(logging.FileHandler(logpath, mode="w"))
 
     optuna.logging.enable_propagation()
     optuna.logging.disable_default_handler()
