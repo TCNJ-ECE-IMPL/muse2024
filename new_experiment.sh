@@ -12,6 +12,7 @@ mkdir -p "$exp_dir"
 cp -r ./src "$exp_dir/src"
 cp -r ./tdms_data "$exp_dir/tdms_data"
 mkdir -p "$exp_dir/models"
+mkdir -p "$exp_dir/checkpoints"
 
 echo "Running script..."
 cd $exp_dir/src

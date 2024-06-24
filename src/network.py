@@ -36,12 +36,7 @@ valid_end_index = train_end_index + math.floor(len(dataset) * valid_frac)
 
 # Model layers. Using default from tensorflow tutorial, will experiment with optuna at a later stage
 
-model = tf.keras.models.Sequential([
-  tf.keras.layers.Flatten(input_shape=(INPUT_SIZE, 1)),
-  tf.keras.layers.Dense(128, activation='relu'),
-  #tf.keras.layers.Dropout(0.2),
-  tf.keras.layers.Dense(1)
-])
+model = tf.keras.saving.load_model("")
 
 loss_fn = tf.keras.losses.MeanAbsoluteError(
     reduction='sum_over_batch_size',

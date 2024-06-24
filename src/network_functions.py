@@ -7,6 +7,7 @@ import random
 
 INPUT_SIZE = 1024
 USE_FFT = True
+CLASS_NAMES = ['Secure', 'Compromised']
 
 # reads all tdms files in directory and adds them to an array of tuples containing input and output
 def get_base_dataset(dir):
@@ -29,10 +30,10 @@ def get_base_dataset(dir):
         while index + INPUT_SIZE * 2 < total_samples:
             # FIXME
             # Currently setting all output data to 0, we will decide how to convey this when we develop the physical testing system further
-            if tdms_filename == "exp1.tdms":
-                output_data = 0.0
+            if tdms_filename == "secure.tdms":
+                output_data = 'Secure'
             else:
-                output_data = 1.0
+                output_data = 'Compromised'
 
             # Input data is the fft of the selected portion of the wave input
             if USE_FFT:
