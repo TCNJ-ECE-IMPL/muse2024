@@ -1,0 +1,16 @@
+A new study created in memory with name: no-name-b8ea8430-c165-4d26-9799-631381da2f18
+Trial 0 failed with parameters: {'n_layers': 18, 'weight_decay': 1.4027915373904134e-09, 'n_units_l0': 34, 'n_units_l1': 7, 'n_units_l2': 6, 'n_units_l3': 16, 'n_units_l4': 46, 'n_units_l5': 30, 'n_units_l6': 93, 'n_units_l7': 125, 'n_units_l8': 47, 'n_units_l9': 21, 'n_units_l10': 42, 'n_units_l11': 26, 'n_units_l12': 4, 'n_units_l13': 6, 'n_units_l14': 97, 'n_units_l15': 6, 'n_units_l16': 47, 'n_units_l17': 4, 'optimizer': 'SGD', 'sgd_opt_learning_rate': 0.0060399951846536815, 'sgd_opt_momentum': 0.00028251333699961785} because of the following error: InvalidArgumentError().
+Traceback (most recent call last):
+  File "/home/newuser/.local/lib/python3.10/site-packages/optuna/study/_optimize.py", line 196, in _run_trial
+    value_or_values = func(trial)
+  File "/drive/sda2/home/newuser/Muse2024/muse2024/experiments/exp3/src/network_optuna.py", line 102, in objective
+    learn(model, optimizer, train_ds, "train")
+  File "/drive/sda2/home/newuser/Muse2024/muse2024/experiments/exp3/src/network_optuna.py", line 32, in learn
+    tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=labels)
+  File "/usr/local/lib/python3.10/dist-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/usr/local/lib/python3.10/dist-packages/tensorflow/python/framework/ops.py", line 5983, in raise_from_not_ok_status
+    raise core._status_to_exception(e) from None  # pylint: disable=protected-access
+tensorflow.python.framework.errors_impl.InvalidArgumentError: Value for attr 'Tlabels' of double is not in the list of allowed values: int32, int64
+	; NodeDef: {{node SparseSoftmaxCrossEntropyWithLogits}}; Op<name=SparseSoftmaxCrossEntropyWithLogits; signature=features:T, labels:Tlabels -> loss:T, backprop:T; attr=T:type,allowed=[DT_HALF, DT_BFLOAT16, DT_FLOAT, DT_DOUBLE]; attr=Tlabels:type,default=DT_INT64,allowed=[DT_INT32, DT_INT64]> [Op:SparseSoftmaxCrossEntropyWithLogits] name: 
+Trial 0 failed with value None.
