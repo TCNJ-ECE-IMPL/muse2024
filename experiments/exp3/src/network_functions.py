@@ -81,42 +81,6 @@ def get_dataset(dir):
     valid_ds = tf.data.Dataset.from_tensor_slices((x_valid, y_valid))
     return train_ds, valid_ds
 
-# Gets the dataset and formats to 
-def get_dataset_old(dir):
-    # Get dataset from tdms files
-    dataset = get_base_dataset(dir)
-    # Shuffle dataset
-    random.shuffle(dataset)
-
-    # Partition dataset
-    train_frac = 0.7
-    valid_frac = 0.2
-
-    train_end_index = math.floor(len(dataset) * train_frac)
-    valid_end_index = train_end_index + math.floor(len(dataset) * valid_frac)
-
-    (x_train, y_train) = tuplelist2listtuple(dataset[0:train_end_index])
-    (x_valid, y_valid) = tuplelist2listtuple(dataset[train_end_index + 1 : valid_end_index])
-    (x_test, y_text) = tuplelist2listtuple(dataset[valid_end_index + 1 : len(dataset)])
-
-    train_ds = tf.data.Dataset.from_tensor_slices((x_train, y_train))
-    valid_ds = tf.data.Dataset.from_tensor_slices((x_valid, y_valid))
-    return train_ds, valid_ds
-
-# Turns the shuffleable list of tuples to an easier to work with tuple of lists
-def tuplelist2listtuple(tuplist):
-    num_items = len(tuplist)
-    list1 = np.empty((num_items, INPUT_SIZE))
-    list2 = np.empty((num_items, 1))
-
-    for i in range(len(tuplist)):
-        item = tuplist[i]
-        l1a = np.array([item[0]])
-        list1[i] = l1a
-        l2a = np.array([item[1]])
-        list2[i] = l2a
-    return (list1, list2)
-
 # Filters out highest value moduli
 def filterHighest(input_data_unfiltered):
     # Filter out highest 1024
