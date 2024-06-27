@@ -9,10 +9,6 @@ INPUT_SIZE = 1024
 USE_FFT = True
 CLASS_NAMES = ['Secure', 'Compromised']
 
-N_TRAIN_EXAMPLES = 250
-N_VALID_EXAMPLES = 50
-BATCHSIZE = 30
-
 # reads all tdms files in directory and adds them to an array of tuples containing input and output
 def get_base_dataset(dir):
     x = np.empty([1, 1, INPUT_SIZE], dtype=float)
@@ -81,10 +77,8 @@ def get_dataset(dir):
     y_valid = y[train_end_index + 1 : valid_end_index]
 
     train_ds = tf.data.Dataset.from_tensor_slices((x_train, y_train))
-    train_ds = train_ds.shuffle(60000).batch(BATCHSIZE).take(N_TRAIN_EXAMPLES)
 
     valid_ds = tf.data.Dataset.from_tensor_slices((x_valid, y_valid))
-    valid_ds = valid_ds.shuffle(10000).batch(BATCHSIZE).take(N_VALID_EXAMPLES)
     return train_ds, valid_ds
 
 # Turns the shuffleable list of tuples to an easier to work with tuple of lists
