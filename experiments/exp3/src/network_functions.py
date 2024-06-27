@@ -77,8 +77,10 @@ def get_dataset(dir):
     y_valid = y[train_end_index + 1 : valid_end_index]
 
     train_ds = tf.data.Dataset.from_tensor_slices((x_train, y_train))
+    train_ds = train_ds.batch(batch_size=25)
 
     valid_ds = tf.data.Dataset.from_tensor_slices((x_valid, y_valid))
+    valid_ds = valid_ds.batch(batch_size=25)
     return train_ds, valid_ds
 
 # Filters out highest value moduli
