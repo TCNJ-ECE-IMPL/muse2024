@@ -139,3 +139,6 @@ def filterHighest(input_data_unfiltered):
                 input_data = np.delete(input_data, i)
                 break
     return input_data
+
+def getPath(rel):
+    return os.path.join(os.path.dirname(os.path.realpath(__file__)), rel)

@@ -62,7 +62,7 @@ def create_model(trial):
         tf.keras.layers.Dense(2, kernel_regularizer=tf.keras.regularizers.l2(weight_decay))
     )
     model_save_filename = str(trial.number) + ".keras"
-    model_save_path = os.path.join("../models", model_save_filename)
+    model_save_path = os.path.join(nf.getPath("../models"), model_save_filename)
     model.save(model_save_path)
     return model
 
@@ -92,7 +92,7 @@ def create_optimizer(trial):
 # Modified from optuna example on GitHub
 def objective(trial):
     # Get dataset from tdms files
-    train_ds, valid_ds = nf.get_dataset("../tdms_data/")
+    train_ds, valid_ds = nf.get_dataset(nf.getPath("../tdms_data/"))
 
     model = create_model(trial)
     optimizer = create_optimizer(trial) 
