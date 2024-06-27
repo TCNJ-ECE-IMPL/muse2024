@@ -13,6 +13,7 @@ import keras
 ############
 INPUT_SIZE = 1024
 USE_FFT = False
+NUM_EPOCHS = 500
 
 #######
 # MAIN:
