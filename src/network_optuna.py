@@ -16,6 +16,7 @@ import pathlib
 INPUT_SIZE = 1024
 USE_FFT = True
 EPOCHS = 25
+N_TRIALS = 500
 
 ############
 # FUNCTIONS:
@@ -126,7 +127,7 @@ if __name__ == "__main__":
 
     # Create and run study
     study = optuna.create_study(direction="maximize")
-    study.optimize(objective, n_trials=500)
+    study.optimize(objective, n_trials=N_TRIALS)
 
     print("Number of finished trials: ", len(study.trials))
 

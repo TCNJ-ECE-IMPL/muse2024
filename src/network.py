@@ -29,10 +29,14 @@ model = keras.saving.load_model(nf.getPath("../models/306.keras"))
 model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
+# Prepare saving of checkpoints
+
 checkpoint_path = nf.getPath("../checkpoints/model.json")
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)
+
+# Run the model
 
 model.fit(
     x=train_ds, 
