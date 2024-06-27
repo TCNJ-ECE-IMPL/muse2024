@@ -114,7 +114,7 @@ def getPath(rel):
 # Checks if file name contains the word secure
 def isSecure(path):
     pattern = r'\bsecure\b'
-    if re.search(pattern, input_string):
+    if re.search(pattern, path):
         return True
     else:
         return False
