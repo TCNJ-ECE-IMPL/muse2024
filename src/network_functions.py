@@ -4,7 +4,7 @@ import nptdms
 import tensorflow as tf
 import os
 import random
-import regex
+import re
 
 INPUT_SIZE = 1024
 USE_FFT = True
