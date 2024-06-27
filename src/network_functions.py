@@ -60,6 +60,27 @@ def unison_shuffled_copies(a, b):
     p = np.random.permutation(len(a))
     return a[p], b[p]
 
+def get_dataset(dir):
+    (x, y) = get_base_dataset(dir)
+    (x, y) = unison_shuffled_copies(x, y)
+
+    # Partition dataset
+    train_frac = 0.7
+    valid_frac = 0.2
+
+    train_end_index = math.floor(len(x) * train_frac)
+    valid_end_index = train_end_index + math.floor(len(x) * valid_frac)
+
+    x_train = x[0:train_end_index]
+    y_train = y[0:train_end_index]
+    x_valid = x[train_end_index + 1 : valid_end_index]
+    y_valid = y[train_end_index + 1 : valid_end_index]
+
+    train_ds = tf.data.Dataset.from_tensor_slices((x_train, y_train))
+
+    valid_ds = tf.data.Dataset.from_tensor_slices((x_valid, y_valid))
+    return train_ds, valid_ds
+
 # Filters out highest value moduli
 def filterHighest(input_data_unfiltered):
     # Filter out highest 1024
