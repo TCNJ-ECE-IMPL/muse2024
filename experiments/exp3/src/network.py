@@ -39,6 +39,6 @@ cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_
 model.fit(
     x=train_ds, 
     validation_data=valid_ds, 
-    epochs=25,
+    epochs=NUM_EPOCHS,
     callbacks=[cp_callback]
 )
