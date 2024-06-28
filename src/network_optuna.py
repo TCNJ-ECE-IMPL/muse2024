@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
     # Set up logging within experiment directory
     temppath = pathlib.Path().resolve()
-    logpath = os.path.join(temppath, "study.log")
+    logpath = os.path.join(temppath, nf.getPath("study.log"))
 
     logger = logging.getLogger()
 
