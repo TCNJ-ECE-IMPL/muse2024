@@ -20,7 +20,7 @@ NUM_EPOCHS = 500
 #######
 
 # Get dataset from tdms files
-train_ds, valid_ds = nf.get_base_dataset(nf.getPath("../tdms_data/"))
+train_ds, valid_ds = nf.get_dataset(nf.getPath("../tdms_data/"))
 
 
 # Model layers. Using default from tensorflow tutorial, will experiment with optuna at a later stage
