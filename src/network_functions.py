@@ -4,7 +4,6 @@ import nptdms
 import tensorflow as tf
 import os
 import random
-import re
 
 INPUT_SIZE = 1024
 USE_FFT = True
@@ -30,7 +29,7 @@ def get_base_dataset(dir):
         index = 0
 
         while index + INPUT_SIZE * 2 < total_samples:
-            if isSecure(tdms_filename):
+            if "secure" in tdms_filename:
                 output_data = 0
             else:
                 output_data = 1
@@ -111,11 +110,4 @@ def filterHighest(input_data_unfiltered):
 def getPath(rel):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), rel)
 
-# Checks if file name contains the word secure
-def isSecure(path):
-    pattern = r'\bsecure\b'
-    if re.search(pattern, path):
-        return True
-    else:
-        return False
 
