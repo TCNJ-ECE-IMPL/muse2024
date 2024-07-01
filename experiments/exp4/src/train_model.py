@@ -25,7 +25,7 @@ train_ds, valid_ds = nf.get_dataset(nf.getPath("../tdms_data/"))
 
 # Model layers. Using default from tensorflow tutorial, will experiment with optuna at a later stage
 
-model = keras.saving.load_model(nf.getPath("../models/optuna_best.keras"))
+model = keras.saving.load_model(nf.getPath("../models/89.keras"))
 
 model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
