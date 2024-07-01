@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import os
+import shutil
 import nptdms
 import matplotlib.pyplot as plt
 import random
@@ -15,8 +16,8 @@ import pathlib
 ############
 INPUT_SIZE = 1024
 USE_FFT = True
-EPOCHS = 25
-N_TRIALS = 500
+EPOCHS = 10
+N_TRIALS = 250
 
 ############
 # FUNCTIONS:
@@ -62,9 +63,6 @@ def create_model(trial):
     model.add(
         tf.keras.layers.Dense(2, kernel_regularizer=tf.keras.regularizers.l2(weight_decay))
     )
-    model_save_filename = str(trial.number) + ".keras"
-    model_save_path = os.path.join(nf.getPath("../models"), model_save_filename)
-    model.save(model_save_path)
     return model
 
 # Modified from optuna example on GitHub
@@ -104,6 +102,10 @@ def objective(trial):
 
         accuracy = learn(model, optimizer, valid_ds, "eval")
 
+    model_save_filename = str(trial.number) + ".keras"
+    model_save_path = os.path.join(nf.getPath("../models/temp"), model_save_filename)
+    model.save(model_save_path)
+
     # Return last validation accuracy.
     return accuracy.result()
 
@@ -125,14 +127,27 @@ if __name__ == "__main__":
     optuna.logging.enable_propagation()
     optuna.logging.disable_default_handler()
 
+    # Set up directory for saving models
+    os.mkdir(nf.getPath("../models/temp"))
+
     # Create and run study
     study = optuna.create_study(direction="maximize")
     study.optimize(objective, n_trials=N_TRIALS)
 
+    # Find and preserve best model
+
+    trial = study.best_trial
+    best_model_filename = str(trial.value) + ".keras"
+    old_best_path = os.path.join(nf.getPath("../models/temp"), best_model_filename)
+    new_best_path = os.path.join(nf.getPath("../models"), "optuna_best.keras")
+    os.replace(old_best_path, new_best_path)
+    shutil.rmtree(nf.getPath("../models/temp"))
+
+    # Report best model
+
     print("Number of finished trials: ", len(study.trials))
 
     print("Best trial:")
-    trial = study.best_trial
 
     print("  Value: ", trial.value)
 
