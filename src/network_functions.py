@@ -38,7 +38,7 @@ def get_base_dataset(dir):
 
             # Input data is the fft of the selected portion of the wave input
             if USE_FFT:
-                input_data = np.absolute(np.fft.fft(channel_data[(index) : (index + INPUT_SIZE * 2)]))[0:INPUT_SIZE - 1]
+                input_data = np.absolute(np.fft.fft(channel_data[(index) : (index + INPUT_SIZE * 2)]))[0:INPUT_SIZE]
             else:
                 input_data = channel_data[(index) : (index + INPUT_SIZE * 2)]
             
