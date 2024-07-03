@@ -16,7 +16,7 @@ import pathlib
 ############
 INPUT_SIZE = 1024
 USE_FFT = True
-EPOCHS = 10
+EPOCHS = 25
 N_TRIALS = 250
 
 ############
