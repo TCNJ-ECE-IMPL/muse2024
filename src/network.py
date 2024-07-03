@@ -9,6 +9,8 @@ import network_functions as nf
 import keras
 from keras import layers
 
+# Creates a new model using user defined parameters and trains it
+
 ############
 # CONSTANTS:
 ############

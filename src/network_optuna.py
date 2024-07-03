@@ -11,6 +11,8 @@ import logging
 import network_functions as nf
 import pathlib
 
+# Tests different model structures and determines the most effective one. This is then saved to "checkpoints"
+
 ############
 # CONSTANTS:
 ############
