@@ -7,6 +7,7 @@ import random
 import tensorflow as tf
 import network_functions as nf
 import keras
+from keras import layers
 
 ############
 # CONSTANTS:
@@ -25,10 +26,31 @@ train_ds, valid_ds = nf.get_dataset(nf.getPath("../tdms_data/"))
 
 # Model layers. Using default from tensorflow tutorial, will experiment with optuna at a later stage
 
-model = keras.saving.load_model(nf.getPath("../models/optuna_best.keras"))
+model = keras.Sequential(
+    [
+        layers.Conv1D(32, 11, activation="relu", name="conv1"),
+        layers.Dense(7, activation="relu", name="fc1"),
+        layers.Dense(12, activation="relu", name="fc2"),
+        layers.Dense(71, activation="relu", name="fc3"),
+        layers.Dense(122, activation="relu", name="fc4"),
+        layers.Dense(7, activation="relu", name="fc5"),
+        layers.Dense(6, activation="relu", name="fc6"),
+        layers.Dense(126, activation="relu", name="fc7"),
+        layers.Dense(5, activation="relu", name="fc8"),
+    ]
+)
 
-model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
+optimizer = tf.keras.optimizers.RMSprop(
+    learning_rate=1.07600032481164e-05,
+    weight_decay=0.9826945740093362,
+    momentum=1.0331352319816896e-05
+)
+
+model.compile(
+    optimizer=optimizer,
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    metrics=['accuracy']
+)
 
 # Prepare saving of checkpoints
 
