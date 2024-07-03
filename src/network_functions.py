@@ -38,11 +38,10 @@ def get_base_dataset(dir):
 
             # Input data is the fft of the selected portion of the wave input
             if USE_FFT:
-                input_data_unfiltered = np.absolute(np.fft.fft(channel_data[(index) : (index + INPUT_SIZE * 2)]))
+                input_data = np.absolute(np.fft.fft(channel_data[(index) : (index + INPUT_SIZE * 2)]))[0:INPUT_SIZE - 1]
             else:
-                input_data_unfiltered = channel_data[(index) : (index + INPUT_SIZE * 2)]
+                input_data = channel_data[(index) : (index + INPUT_SIZE * 2)]
             
-            input_data = filterHighest(input_data_unfiltered)
             input_data = np.array([input_data])
 
             # Add data to the dataset
@@ -90,23 +89,6 @@ def get_dataset(dir):
     valid_ds = valid_ds.batch(batch_size=25)
 
     return train_ds, valid_ds
-
-# Filters out highest value moduli
-def filterHighest(input_data_unfiltered):
-    # Filter out highest 1024
-    median = np.median(input_data_unfiltered)
-    input_data = np.array([])
-    for item in input_data_unfiltered:
-        if item <= median:
-            input_data = np.append(input_data, item)
-
-    # Ensure duplicates of median do not push over the edge
-    while input_data.size > INPUT_SIZE:
-        for i in range(input_data.size):
-            if input_data[i] == median:
-                input_data = np.delete(input_data, i)
-                break
-    return input_data
 
 # Finds absolute path from relative with respect to executing file
 def getPath(rel):
