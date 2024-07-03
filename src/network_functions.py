@@ -5,6 +5,8 @@ import tensorflow as tf
 import os
 import random
 
+# A set of predefined functions
+
 INPUT_SIZE = 1024
 USE_FFT = True
 CLASS_NAMES = ['Secure', 'Compromised']

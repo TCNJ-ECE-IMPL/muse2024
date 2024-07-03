@@ -8,6 +8,8 @@ import tensorflow as tf
 import network_functions as nf
 import keras
 
+# Picks up an optuna model and trains it further
+
 ############
 # CONSTANTS:
 ############
