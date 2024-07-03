@@ -12,7 +12,7 @@ import keras
 # CONSTANTS:
 ############
 INPUT_SIZE = 1024
-USE_FFT = False
+USE_FFT = True
 NUM_EPOCHS = 500
 
 #######
