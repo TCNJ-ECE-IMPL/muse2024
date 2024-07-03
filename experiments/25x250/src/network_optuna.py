@@ -11,6 +11,8 @@ import logging
 import network_functions as nf
 import pathlib
 
+# Tests different model structures and determines the most effective one. This is then saved to "checkpoints"
+
 ############
 # CONSTANTS:
 ############
@@ -18,6 +20,9 @@ INPUT_SIZE = 1024
 USE_FFT = True
 EPOCHS = 25
 N_TRIALS = 250
+
+train_ds = None
+valid_ds = None
 
 ############
 # FUNCTIONS:
@@ -115,6 +120,10 @@ def objective(trial):
 
 if __name__ == "__main__":
 
+    # Get dataset
+
+    train_ds, valid_ds = nf.get_dataset(nf.getPath("../tdms_data/"))
+
     # Set up logging within experiment directory
     temppath = pathlib.Path().resolve()
     logpath = os.path.join(temppath, nf.getPath("study.log"))
@@ -137,7 +146,7 @@ if __name__ == "__main__":
     # Find and preserve best model
 
     trial = study.best_trial
-    best_model_filename = str(trial.number) + ".keras"
+    best_model_filename = str(trial.value) + ".keras"
     old_best_path = os.path.join(nf.getPath("../models/temp"), best_model_filename)
     new_best_path = os.path.join(nf.getPath("../models"), "optuna_best.keras")
     os.replace(old_best_path, new_best_path)

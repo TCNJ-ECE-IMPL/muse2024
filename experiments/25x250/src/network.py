@@ -44,7 +44,7 @@ model = keras.Sequential(
 
 optimizer = tf.keras.optimizers.RMSprop(
     learning_rate=1.07600032481164e-05,
-    weight_decay=0.9826945740093362,
+    weight_decay=0.2826945740093362,
     momentum=1.0331352319816896e-05
 )
 

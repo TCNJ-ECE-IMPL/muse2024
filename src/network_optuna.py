@@ -21,6 +21,9 @@ USE_FFT = True
 EPOCHS = 25
 N_TRIALS = 250
 
+train_ds = None
+valid_ds = None
+
 ############
 # FUNCTIONS:
 ############
@@ -116,6 +119,10 @@ def objective(trial):
 #######
 
 if __name__ == "__main__":
+
+    # Get dataset
+
+    train_ds, valid_ds = nf.get_dataset(nf.getPath("../tdms_data/"))
 
     # Set up logging within experiment directory
     temppath = pathlib.Path().resolve()
