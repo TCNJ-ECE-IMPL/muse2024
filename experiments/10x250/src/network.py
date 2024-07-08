@@ -16,7 +16,7 @@ from keras import layers
 ############
 INPUT_SIZE = 1024
 USE_FFT = True
-NUM_EPOCHS = 500
+NUM_EPOCHS = 30
 
 #######
 # MAIN:
@@ -30,24 +30,17 @@ train_ds, valid_ds = nf.get_dataset(nf.getPath("../tdms_data/"))
 
 model = keras.Sequential(
     [
-        layers.Conv1D(32, [11], activation="relu", name="conv1", data_format="channels_first"),
-        layers.Flatten(data_format="channels_first"),
-        layers.Dense(7, activation="relu", name="fc1"),
-        layers.Dense(12, activation="relu", name="fc2"),
-        layers.Dense(71, activation="relu", name="fc3"),
-        layers.Dense(122, activation="relu", name="fc4"),
-        layers.Dense(7, activation="relu", name="fc5"),
-        layers.Dense(6, activation="relu", name="fc6"),
-        layers.Dense(126, activation="relu", name="fc7"),
-        layers.Dense(5, activation="relu", name="fc8"),
-        layers.Dense(2, activation="softmax", name="output")
+        #layers.Conv1D(32, [11], activation="relu", name="conv1", data_format="channels_first"),
+        #layers.Flatten(data_format="channels_first"),
+        layers.Dense(86, activation="relu", name="fc1"),
+        layers.Dense(40, activation="relu", name="fc2"),
+        layers.Dense(1, name="output")
     ]
 )
 
-optimizer = tf.keras.optimizers.RMSprop(
-    learning_rate=1.07600032481164e-05,
-    weight_decay=0.9826945740093362,
-    momentum=1.0331352319816896e-05
+optimizer = tf.keras.optimizers.Adam(
+    learning_rate=0.002375367385948983,
+    weight_decay=1.0325812267590434e-07
 )
 
 model.compile(
@@ -58,16 +51,18 @@ model.compile(
 
 # Prepare saving of checkpoints
 
-checkpoint_path = nf.getPath("../checkpoints/checkpoints.weights.h5")
+checkpoint_path = nf.getPath("../checkpoints/checkpoints_2.weights.h5")
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)
 
 # Run the model
 
-model.fit(
+history = model.fit(
     x=train_ds, 
     validation_data=valid_ds, 
     epochs=NUM_EPOCHS,
     callbacks=[cp_callback]
 )
+
+nf.plotTraining(history)
