@@ -13,7 +13,8 @@ cp -r ./src "$exp_dir/src"
 cp -r ./tdms_data "$exp_dir/tdms_data"
 mkdir -p "$exp_dir/models"
 mkdir -p "$exp_dir/checkpoints"
+mkdir -p "$exp_dir/datasets"
 
 echo "Running script..."
 cd $exp_dir/src
-python3.10 ./network_optuna.py
+python3.10 ./prepare_dataset.py
