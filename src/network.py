@@ -30,7 +30,8 @@ train_ds, valid_ds = nf.get_dataset(nf.getPath("../tdms_data/"))
 
 model = keras.Sequential(
     [
-        layers.Conv1D(32, 11, activation="relu", name="conv1"),
+        layers.Conv1D(32, [11], activation="relu", name="conv1", data_format="channels_first"),
+        layers.Flatten(data_format="channels_first"),
         layers.Dense(7, activation="relu", name="fc1"),
         layers.Dense(12, activation="relu", name="fc2"),
         layers.Dense(71, activation="relu", name="fc3"),
@@ -39,6 +40,7 @@ model = keras.Sequential(
         layers.Dense(6, activation="relu", name="fc6"),
         layers.Dense(126, activation="relu", name="fc7"),
         layers.Dense(5, activation="relu", name="fc8"),
+        layers.Dense(2, activation="softmax", name="output")
     ]
 )
 
