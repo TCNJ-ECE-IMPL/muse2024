@@ -33,8 +33,10 @@ model = keras.Sequential(
         #layers.Conv1D(32, [11], activation="relu", name="conv1", data_format="channels_first"),
         #layers.Flatten(data_format="channels_first"),
         layers.Dense(86, activation="relu", name="fc1"),
+        layers.Dropout(0.3),
         layers.Dense(40, activation="relu", name="fc2"),
-        layers.Dense(1, name="output")
+        layers.GlobalAveragePooling1D(),
+        layers.Dense(2, name="output")
     ]
 )
 
@@ -45,6 +47,7 @@ optimizer = tf.keras.optimizers.Adam(
 
 model.compile(
     optimizer=optimizer,
+    #loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
     metrics=['accuracy']
 )
