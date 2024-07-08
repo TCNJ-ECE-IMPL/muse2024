@@ -16,7 +16,7 @@ from keras import layers
 ############
 INPUT_SIZE = 1024
 USE_FFT = True
-NUM_EPOCHS = 30
+NUM_EPOCHS = 50
 
 #######
 # MAIN:
@@ -26,15 +26,18 @@ NUM_EPOCHS = 30
 train_ds, valid_ds = nf.get_dataset(nf.getPath("../tdms_data/"))
 
 
-# Model layers. Using default from tensorflow tutorial, will experiment with optuna at a later stage
+l2 = tf.keras.regularizers.L2(
+    l2=0.001
+)
 
 model = keras.Sequential(
     [
+        #layers.InputLayer(shape=(1024)),
         #layers.Conv1D(32, [11], activation="relu", name="conv1", data_format="channels_first"),
         #layers.Flatten(data_format="channels_first"),
         layers.Dense(86, activation="relu", name="fc1"),
-        layers.Dropout(0.3),
-        layers.Dense(40, activation="relu", name="fc2"),
+        layers.Dropout(0.2),
+        layers.Dense(40, activation="relu", kernel_regularizer=l2, name="fc2"),
         layers.GlobalAveragePooling1D(),
         layers.Dense(2, name="output")
     ]
@@ -42,19 +45,18 @@ model = keras.Sequential(
 
 optimizer = tf.keras.optimizers.Adam(
     learning_rate=0.002375367385948983,
-    weight_decay=1.0325812267590434e-07
+    weight_decay=1.0325812267590434e-08
 )
 
 model.compile(
     optimizer=optimizer,
-    #loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
     loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
     metrics=['accuracy']
 )
 
 # Prepare saving of checkpoints
 
-checkpoint_path = nf.getPath("../checkpoints/checkpoints_2.weights.h5")
+checkpoint_path = nf.getPath("../checkpoints/checkpoints_3.weights.h5")
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)
