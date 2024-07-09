@@ -65,9 +65,11 @@ cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_
 
 # Run the model
 
-model.fit(
+history = model.fit(
     x=train_ds, 
     validation_data=valid_ds, 
     epochs=NUM_EPOCHS,
     callbacks=[cp_callback]
 )
+
+nf.plotTraining(history)

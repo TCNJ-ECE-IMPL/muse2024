@@ -47,3 +47,5 @@ history = model.fit(
     epochs=NUM_EPOCHS,
     callbacks=[cp_callback]
 )
+
+nf.plotTraining(history)
