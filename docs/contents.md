@@ -26,7 +26,7 @@ These checkpoints are trained and contain weights.
 
 # Contents of the src directory:
 
-**prepare_dataset.py**
+**prepare_dataset.py:**
 
 Reads data from the tdms files stored in /tdms_data/ and converts into TensorFlow dataset objects. Shuffles, partitions, and saves under /datasets/. This script is automatically run when new_experiment.sh is executed.
 
@@ -42,10 +42,10 @@ Utilizes the optuna library to find ideal hyperparameters for the neural network
 
 Trains the ideal model found in network_optuna.py
 
-**network.py**
+**network.py:**
 
 Creates a network from scratch and runs. Usually contains a model based off of the best optuna trial, re-implemented to have greater control over layers.
 
-**plot.py**
+**plot.py:**
 
 Contains visualization tools for the network
