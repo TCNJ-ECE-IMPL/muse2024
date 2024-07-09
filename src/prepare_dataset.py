@@ -5,6 +5,14 @@ import os
 import math
 import tensorflow as tf
 
+def tdms_to_numpy(tdms_path):
+    # Find data array from tdms
+    tdms_file = nptdms.TdmsFile.read(tdms_path)
+    group = tdms_file["Group Name"]
+    channel = group["Voltage_0"]
+    channel_data = channel[:]
+    return channel_data
+
 INPUT_SIZE = nf.INPUT_SIZE
 USE_FFT = True
 
@@ -16,12 +24,8 @@ y = np.empty([1], dtype=int)
 tdms_dir = nf.getPath("../tdms_data/")
 # Get data from each tdms file in directory
 for tdms_filename in os.listdir(tdms_dir):
-    # Find data array from tdms
     tdms_path = tdms_dir + tdms_filename
-    tdms_file = nptdms.TdmsFile.read(tdms_path)
-    group = tdms_file["Group Name"]
-    channel = group["Voltage_0"]
-    channel_data = channel[:]
+    channel_data = tdms_to_numpy(tdms_path)
 
     # Split up channel data into arrays of size INPUT_SIZE
     total_samples = channel_data.size
