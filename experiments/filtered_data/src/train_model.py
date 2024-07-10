@@ -15,7 +15,7 @@ import keras
 ############
 INPUT_SIZE = 1024
 USE_FFT = True
-NUM_EPOCHS = 15
+NUM_EPOCHS = 50
 
 #######
 # MAIN:
@@ -34,7 +34,7 @@ model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=Tru
 
 # Prepare saving of checkpoints
 
-checkpoint_path = nf.getPath("../checkpoints/checkpoints.weights.h5")
+checkpoint_path = nf.getPath("../checkpoints/checkpoints_1.weights.h5")
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)
