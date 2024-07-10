@@ -31,25 +31,4 @@ def get_dataset(dir):
 def getPath(rel):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), rel)
 
-# Plots training and validation accuracy and loss after training completes
-def plotTraining(history):
-    acc = history.history['accuracy']
-    val_acc = history.history['val_accuracy']
-    loss = history.history['loss']
-    val_loss = history.history['val_loss']
 
-    epochs = range(1, len(acc) + 1)
-
-    plt.plot(epochs, acc, '-b', label='Training acc')
-    plt.plot(epochs, val_acc, '--g', label='Validation acc')
-    plt.title('Training and validation accuracy')
-    plt.legend()
-
-    plt.figure()
-
-    plt.plot(epochs, loss, '-b', label='Training loss')
-    plt.plot(epochs, val_loss, '--g', label='Validation loss')
-    plt.title('Training and validation loss')
-    plt.legend()
-
-    plt.show()
