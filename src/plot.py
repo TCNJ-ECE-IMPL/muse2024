@@ -14,6 +14,29 @@ def tdms_to_numpy(tdms_path):
     channel_data = channel[:]
     return channel_data
 
+def plotTraining(history):
+    # Plots training and validation accuracy and loss after training completes
+    acc = history.history['accuracy']
+    val_acc = history.history['val_accuracy']
+    loss = history.history['loss']
+    val_loss = history.history['val_loss']
+
+    epochs = range(1, len(acc) + 1)
+
+    plt.plot(epochs, acc, '-b', label='Training acc')
+    plt.plot(epochs, val_acc, '--g', label='Validation acc')
+    plt.title('Training and validation accuracy')
+    plt.legend()
+
+    plt.figure()
+
+    plt.plot(epochs, loss, '-b', label='Training loss')
+    plt.plot(epochs, val_loss, '--g', label='Validation loss')
+    plt.title('Training and validation loss')
+    plt.legend()
+
+    plt.show()
+
 def plot_log_file(log_path):
     # Plots a .log function created from network_optuna
 
