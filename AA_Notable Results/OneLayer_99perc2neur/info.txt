@@ -1,0 +1,5 @@
+99.45% validation accuracy with the following parameters:
+
+Trial 103 finished with value: 0.9784482717514038 and parameters: {'n_layers': 1, 'weight_decay': 0.0007089196269528229, 'n_units_l0': 2, 'optimizer': 'Adam', 'adam_learning_rate': 0.0009294812403129807}.
+
+Trained on the first set of collected data, involving "secure" and "compromised" classes (the latter composed of a single bolt loosened by a quarter turn, full turn, and fully removed)
