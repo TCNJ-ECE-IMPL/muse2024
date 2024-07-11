@@ -60,12 +60,10 @@ dataset_path = nf.getPath("../datasets/")
 test_ds = tf.data.Dataset.load(os.path.join(dataset_path, "test"))
 
 for i in range(5):
-    test_batch = get_ds_element(test_ds, 2)
+    test_batch = get_ds_element(test_ds, 0)
 
-    X = test_batch[0][0].numpy()
-    sample_out = test_batch[1][0]
-
-    result = getResultFromLogits(sample_out)
+    X = test_batch[0][i].numpy()
+    result = test_batch[1][i].numpy()
 
     W1_raw = model.layers[1].get_weights()
     W2_raw = model.layers[2].get_weights()
@@ -78,6 +76,6 @@ for i in range(5):
 
     W1_eff = effective_weight(Y, W1)
 
-    vis_weights = tf.linalg.matmul(W1_eff, np.array([W2]).transpose()).numpy()
+    vis_weights = tf.linalg.matmul(W1_eff, W2).numpy()
 
     visualize_array(vis_weights, str(result))
