@@ -16,6 +16,9 @@ import pathlib
 ############
 # CONSTANTS:
 ############
+
+MODEL_TYPE = 0
+
 INPUT_SIZE = 1024
 USE_FFT = True
 EPOCHS = 15
@@ -120,6 +123,7 @@ def objective(trial):
 
 if __name__ == "__main__":
 
+    
     # Get dataset
 
     train_ds, valid_ds = nf.get_dataset(nf.getPath("../tdms_data/"))
