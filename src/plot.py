@@ -37,7 +37,26 @@ def plotTraining(history):
 
     plt.show()
 
-def plot_log_file(log_path):
+def plot_spectrogram(tdms_path):
+    fs = 12800  # Sample rate, may or may not be correct
+
+    array = tdms_to_numpy(tdms_path)
+
+    # Compute the spectrogram
+    frequencies, times, Sxx = spectrogram(array, fs)
+
+    # Plot the spectrogram
+    plt.figure(figsize=(10, 6))
+    plt.pcolormesh(times, frequencies, 10 * np.log10(Sxx))
+    plt.ylabel('Frequency [Hz]')
+    plt.xlabel('Time [sec]')
+    plt.title('Spectrogram')
+    plt.colorbar(label='Intensity [dB]')
+    plt.show()
+    
+    return
+
+def read_log_file(log_path):
     # Plots a .log function created from network_optuna
 
     ###########################
@@ -76,6 +95,9 @@ def plot_log_file(log_path):
 
             trials.append(trial_details)                    ## Append to trials array
 
+    return trials
+
+def default_log_graph(trials):
     ######################
     ##   Create graph   ##
     ######################
@@ -95,35 +117,49 @@ def plot_log_file(log_path):
     # Display plot
     plt.grid(True, which="both", ls="--")
     plt.show()
+    return
 
-def plot_spectrogram(tdms_path):
-    fs = 12800  # Sample rate, may or may not be correct
+def log_graph_1(trials):
+    ######################
+    ##   Create graph   ##
+    ######################
+    new_trials = []
 
-    array = tdms_to_numpy(tdms_path)
-
-    # Compute the spectrogram
-    frequencies, times, Sxx = spectrogram(array, fs)
-
-    # Plot the spectrogram
-    plt.figure(figsize=(10, 6))
-    plt.pcolormesh(times, frequencies, 10 * np.log10(Sxx))
-    plt.ylabel('Frequency [Hz]')
-    plt.xlabel('Time [sec]')
-    plt.title('Spectrogram')
-    plt.colorbar(label='Intensity [dB]')
-    plt.show()
     
+    for trial in trials:
+        if trial["param"]["n_layers"] == 1:
+            new_trials.append(trial)
+    
+
+    trials = new_trials
+
+    ## Assign axes
+    x_axis = [trial["trial_num"] for trial in trials]
+    y_axis = [trial["val"] for trial in trials]
+
+    ## Plotting 
+    plt.plot(x_axis, y_axis)
+    
+    ## Assign labels and title
+    plt.xlabel('Trial Number')
+    plt.ylabel('Value')
+    plt.title('All models with n=1')
+    
+    # Display plot
+    plt.grid(True, which="both", ls="--")
+    plt.show()
     return
 
 if __name__ == "__main__":
     while True:
-        file_path = input("Enter full path to desired tdms file: ")
+        file_path = input("Enter full path to desired file: ")
         
         if os.path.isfile(file_path):
-            print("File path is valid. Generating spectrogram...")
+            print("File path is valid. Generating graph...")
             break
         else:
             print("File path is not valid. Please try again.")
             
-    plot_spectrogram(file_path)
+    temp = read_log_file(file_path)
+    log_graph_1(temp)
     
