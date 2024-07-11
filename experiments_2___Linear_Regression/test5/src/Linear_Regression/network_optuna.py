@@ -118,7 +118,6 @@ def learn(model, optimizer, dataset, mode="eval"):
         return mse_metric.result().numpy()
 
 
-
 if __name__ == "__main__":
 
     
