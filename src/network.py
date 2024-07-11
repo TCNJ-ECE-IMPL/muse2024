@@ -8,6 +8,7 @@ import tensorflow as tf
 import network_functions as nf
 import keras
 from keras import layers
+import plot
 
 # Creates a new model using user defined parameters and trains it
 
@@ -72,4 +73,4 @@ history = model.fit(
     callbacks=[cp_callback]
 )
 
-nf.plotTraining(history)
+plot.plotTraining(history)
