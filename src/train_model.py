@@ -7,6 +7,7 @@ import random
 import tensorflow as tf
 import network_functions as nf
 import keras
+from plot import plotTraining
 
 # Picks up an optuna model and trains it further
 
@@ -15,7 +16,7 @@ import keras
 ############
 INPUT_SIZE = 1024
 USE_FFT = True
-NUM_EPOCHS = 500
+NUM_EPOCHS = 50
 
 #######
 # MAIN:
@@ -48,4 +49,4 @@ history = model.fit(
     callbacks=[cp_callback]
 )
 
-nf.plotTraining(history)
+plotTraining(history)
