@@ -28,7 +28,7 @@ def getResultFromLogits(logits):
 
 model = keras.saving.load_model(nf.getPath("../models/optuna_best.keras"))
 
-checkpoint_path = nf.getPath("../checkpoints/checkpoints_1.weights.h5")
+checkpoint_path = nf.getPath("../checkpoints/checkpoints.weights.h5")
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 model.load_weights(checkpoint_path)

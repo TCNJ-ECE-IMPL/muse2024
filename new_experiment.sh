@@ -1,11 +1,14 @@
 #!/bin/bash
 
+EXPERIMENTS_FOLDER_DIR="./experiments_2___Linear_Regression"
+PREP_DATASET="./Linear_Regression/prepare_dataset.py"
+
 read -p "Enter name of experiment: " exp_name
-exp_dir="./experiments/$exp_name"
+exp_dir="$EXPERIMENTS_FOLDER_DIR/$exp_name"
 
 while [ -d "$exp_dir" ]; do
     read -p "Already exists, please enter new name: " exp_name
-    exp_dir="./experiments/$exp_name"
+    exp_dir="$EXPERIMENTS_FOLDER_DIR/$exp_name"
 done
 
 mkdir -p "$exp_dir"
@@ -17,4 +20,4 @@ mkdir -p "$exp_dir/datasets"
 
 echo "Running script..."
 cd $exp_dir/src
-python3.10 ./prepare_dataset.py
+python3.10 "$PREP_DATASET"

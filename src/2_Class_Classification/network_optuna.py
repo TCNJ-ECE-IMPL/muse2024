@@ -17,8 +17,6 @@ import pathlib
 # CONSTANTS:
 ############
 
-MODEL_TYPE = 0
-
 INPUT_SIZE = 1024
 USE_FFT = True
 EPOCHS = 15
