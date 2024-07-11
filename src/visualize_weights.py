@@ -13,11 +13,6 @@ def get_ds_element(ds, number):
         number = number - 1
     return None
 
-def compute_probability(x, W_eff):
-    z = np.dot(x, W_eff.T)
-    return 1 / (1 + np.exp(-z))
-
-
 
 # Load model
 
@@ -36,8 +31,8 @@ test_ds = tf.data.Dataset.load(os.path.join(dataset_path, "test"))
 
 test_batch = get_ds_element(test_ds, 0)
 
-sample_x = test_batch[0][0]
-sample_y = test_batch[1][0]
+X = test_batch[0][0]
+sample_out = test_batch[1][0]
 
 # Get the weights and biases of the first dense layer
 W1 = model.layers[0].get_weights()
@@ -45,8 +40,10 @@ W1 = model.layers[0].get_weights()
 # Get the weights and biases of the second dense layer
 W2 = model.layers[1].get_weights()
 
-# Compute the effective weights and biases
-W_eff = np.dot(W2, W1)
+Y = keras.activations.relu(W1 * X)
 
-probability = compute_probability(sample_x, W_eff)
-print("Probability of class 1:", probability)
+W1_eff = Y / X
+
+Z = tf.nn.softmax(W2 * W1_eff * X)
+
+print("hi")
