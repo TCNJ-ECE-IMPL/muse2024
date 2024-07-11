@@ -16,9 +16,9 @@ def get_ds_element(ds, number):
 
 # Load model
 
-model = keras.saving.load_model(nf.getPath("../models/optuna_best.keras"))
+model = keras.saving.load_model(nf.getPath("/home/aldridf1/muse2024/muse2024/AA_Notable Results/OneLayer_99perc2neur/80p2n.keras"))
 
-checkpoint_path = nf.getPath("../checkpoints/checkpoints.weights.h5")
+checkpoint_path = nf.getPath("/home/aldridf1/muse2024/muse2024/AA_Notable Results/OneLayer_99perc2neur/checkpoints.weights.h5")
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 model.load_weights(checkpoint_path)

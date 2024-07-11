@@ -18,13 +18,15 @@ import plot
 INPUT_SIZE = 1024
 USE_FFT = True
 NUM_EPOCHS = 500
+DATA_PATH = "../tdms_data/"
+CHECKPNT_PATH = "../checkpoints/checkpoints.weights.h5"
 
 #######
 # MAIN:
 #######
 
 # Get dataset from tdms files
-train_ds, valid_ds = nf.get_dataset(nf.getPath("../tdms_data/"))
+train_ds, valid_ds = nf.get_dataset(nf.getPath(DATA_PATH))
 
 
 # Model layers. Using default from tensorflow tutorial, will experiment with optuna at a later stage
@@ -59,7 +61,7 @@ model.compile(
 
 # Prepare saving of checkpoints
 
-checkpoint_path = nf.getPath("../checkpoints/checkpoints.weights.h5")
+checkpoint_path = nf.getPath(CHECKPNT_PATH)
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)
