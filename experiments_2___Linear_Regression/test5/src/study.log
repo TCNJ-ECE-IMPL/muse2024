@@ -1,1 +1,17 @@
-A new study created in memory with name: no-name-1e538a3e-0b16-448e-a393-7b8f20308542
+A new study created in memory with name: no-name-f7f05d1e-6c9e-4882-8552-a67be36108f9
+Trial 0 failed with parameters: {'n_layers': 5, 'weight_decay': 1.9239515673324632e-05, 'n_units_l0': 4, 'n_units_l1': 13, 'n_units_l2': 30, 'n_units_l3': 23, 'n_units_l4': 33, 'optimizer': 'Adam', 'adam_learning_rate': 0.0013295523733107503} because of the following error: ValueError('No gradients provided for any variable.').
+Traceback (most recent call last):
+  File "/drive/sda2/home/aldridf1/muse2024/muse2024/.venv/lib/python3.10/site-packages/optuna/study/_optimize.py", line 196, in _run_trial
+    value_or_values = func(trial)
+  File "/home/aldridf1/muse2024/muse2024/experiments_2___Linear_Regression/test5/src/Linear_Regression/network_optuna.py", line 86, in objective
+    learn(model, optimizer, train_ds, "train")
+  File "/home/aldridf1/muse2024/muse2024/experiments_2___Linear_Regression/test5/src/Linear_Regression/network_optuna.py", line 107, in learn
+    optimizer.apply_gradients(zip(grads, model.trainable_variables))
+  File "/drive/sda2/home/aldridf1/muse2024/muse2024/.venv/lib/python3.10/site-packages/keras/src/optimizers/base_optimizer.py", line 282, in apply_gradients
+    self.apply(grads, trainable_variables)
+  File "/drive/sda2/home/aldridf1/muse2024/muse2024/.venv/lib/python3.10/site-packages/keras/src/optimizers/base_optimizer.py", line 335, in apply
+    grads, trainable_variables = self._filter_empty_gradients(
+  File "/drive/sda2/home/aldridf1/muse2024/muse2024/.venv/lib/python3.10/site-packages/keras/src/optimizers/base_optimizer.py", line 662, in _filter_empty_gradients
+    raise ValueError("No gradients provided for any variable.")
+ValueError: No gradients provided for any variable.
+Trial 0 failed with value None.
