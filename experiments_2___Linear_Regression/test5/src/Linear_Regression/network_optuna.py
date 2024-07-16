@@ -94,22 +94,23 @@ def objective(trial):
     # Return last validation accuracy.
     return mse.result()
 
-# Modified from 2CC
 def learn(model, optimizer, dataset, mode="eval"):
-    mse = tf.keras.losses.MeanSquaredError()
+    mse_metric = tf.keras.metrics.MeanSquaredError()
 
     for batch, (features, labels) in enumerate(dataset):
         with tf.GradientTape() as tape:
             predictions = model(features, training=(mode == "train"))
-            loss_value = mse(labels, predictions) 
-            if mode == "eval":
-                mse.update_state(labels, predictions)
-            else:
-                grads = tape.gradient(loss_value, model.trainable_variables)
-                optimizer.apply_gradients(zip(grads, model.trainable_variables))
+            loss_value = mse_metric(labels, predictions)
+
+        if mode == "train":
+            grads = tape.gradient(loss_value, model.trainable_variables)
+            optimizer.apply_gradients(zip(grads, model.trainable_variables))
+
+        mse_metric.update_state(labels, predictions)
 
     if mode == "eval":
-        return mse.result()
+        return mse_metric.result().numpy()
+
 
 if __name__ == "__main__":
 
