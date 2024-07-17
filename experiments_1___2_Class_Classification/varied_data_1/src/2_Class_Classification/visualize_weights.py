@@ -34,21 +34,11 @@ def visualize_array(array, title):
     plt.ylabel('Row Index')
     plt.show()
 
-def getResultFromLogits(logits):
-    highest = logits[0]
-    highest_index = 0
-
-    for index in range(logits):
-        if logits[index] > highest:
-            highest_index = index
-            highest = logits[index]
-    return highest_index
-
 # Load model
 
-model = keras.saving.load_model(nf.getPath("../models/80p2n.keras"))
+model = keras.saving.load_model(nf.getPath("../models/5.keras"))
 
-checkpoint_path = nf.getPath("../checkpoints/checkpoints.weights.h5")
+checkpoint_path = nf.getPath("../checkpoints/5.weights.h5")
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 model.load_weights(checkpoint_path)

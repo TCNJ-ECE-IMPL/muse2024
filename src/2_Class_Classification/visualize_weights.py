@@ -34,16 +34,6 @@ def visualize_array(array, title):
     plt.ylabel('Row Index')
     plt.show()
 
-def getResultFromLogits(logits):
-    highest = logits[0]
-    highest_index = 0
-
-    for index in range(logits):
-        if logits[index] > highest:
-            highest_index = index
-            highest = logits[index]
-    return highest_index
-
 # Load model
 
 model = keras.saving.load_model(nf.getPath("../models/80p2n.keras"))
@@ -78,4 +68,4 @@ for i in range(5):
 
     vis_weights = tf.linalg.matmul(W1_eff, W2).numpy()
 
-    visualize_array(vis_weights, str(result))
+    visualize_array(vis_weights, "Result = " + str(result))
