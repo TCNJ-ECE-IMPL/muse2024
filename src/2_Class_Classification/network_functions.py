@@ -30,5 +30,5 @@ def get_dataset(dir):
 
 # Finds absolute path from relative with respect to executing file
 def getPath(rel):
-    return os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join("../", rel))
+    return os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join(rel)) # "../",
 
