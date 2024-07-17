@@ -32,3 +32,11 @@ def get_dataset(dir):
 def getPath(rel):
     return os.path.join(os.path.dirname(os.path.realpath(__file__)), os.path.join(rel)) # "../",
 
+def tdms_to_numpy(tdms_path):
+    # Find data array from tdms
+    tdms_file = nptdms.TdmsFile.read(tdms_path)
+    group = tdms_file["Group Name"]
+    channel = group["Voltage_0"]
+    channel_data = channel[:]
+    return channel_data
+

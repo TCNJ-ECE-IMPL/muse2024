@@ -7,14 +7,6 @@ import tensorflow as tf
 import time
 import matplotlib.pyplot as plt
 
-def tdms_to_numpy(tdms_path):
-    # Find data array from tdms
-    tdms_file = nptdms.TdmsFile.read(tdms_path)
-    group = tdms_file["Group Name"]
-    channel = group["Voltage_0"]
-    channel_data = channel[:]
-    return channel_data
-
 INPUT_SIZE = nf.INPUT_SIZE
 USE_FFT = True
 NAVG = 16
@@ -47,7 +39,7 @@ tdms_dir = nf.getPath("../tdms_data/")
 # Get data from each tdms file in directory
 for tdms_filename in os.listdir(tdms_dir):
     tdms_path = tdms_dir + tdms_filename
-    channel_data = tdms_to_numpy(tdms_path)
+    channel_data = nf.tdms_to_numpy(tdms_path)
 
     # Split up channel data into arrays of size INPUT_SIZE
     total_samples = channel_data.size
