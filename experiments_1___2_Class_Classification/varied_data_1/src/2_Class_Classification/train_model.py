@@ -38,7 +38,11 @@ model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=Tru
 
 # Load weights from previous checkpoint
 
+<<<<<<< HEAD
 old_checkpoint_path = nf.getPath("../checkpoints/5_2.weights.h5")
+=======
+old_checkpoint_path = nf.getPath("../checkpoints/18.weights.h5")
+>>>>>>> 80c98da2ba5d89ddc26577a48f7cd92773ec787c
 model.load_weights(old_checkpoint_path)
 
 # Prepare saving of checkpoints

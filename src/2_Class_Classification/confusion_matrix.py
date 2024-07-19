@@ -5,29 +5,125 @@ from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
 import network_functions as nf
 import seaborn as sns
+import os
 
-# Load the model
-model = tf.keras.models.load_model(nf.getPath("../models/80p2n.keras"))
+######## CONSTANTS ########
+MODEL_PATH = "../models/5.keras"
+CP_PATH = "../checkpoints/5.weights.h5"
+TDMS_PATH = "../../tdms_data/"
 
-# Load the test data
-test_data = train_ds = tf.data.Dataset.load(nf.getPath("../datasets/test"))
-test_labels = ["secure", "compromised"]  # Assuming the labels are stored as a .npy file
+INPUT_SIZE = nf.INPUT_SIZE
+USE_FFT = True
+NAVG = 16
 
-# Restore the latest checkpoint
-latest_checkpoint = nf.getPath("../checkpoints/80p2n.weights.h5")
-model.load_weights(latest_checkpoint)
 
-# Make predictions
-predictions = model.predict(test_data)
-predicted_classes = np.argmax(predictions, axis=1)
 
-# Generate the confusion matrix
-conf_matrix = confusion_matrix(test_labels, predicted_classes)
+def find_misclassifications(tdms_files):
+    output_arr = []
 
-# Plot the confusion matrix
-plt.figure(figsize=(10, 8))
-sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
-plt.xlabel('Predicted Label')
-plt.ylabel('True Label')
-plt.title('Confusion Matrix')
-plt.show()
+    # Load the model
+    model = tf.keras.models.load_model(nf.getPath(MODEL_PATH))
+
+    # Restore the latest checkpoint
+    latest_checkpoint = nf.getPath(CP_PATH)
+    model.load_weights(latest_checkpoint)
+
+    # Load tdms files
+
+    tdms_dir = nf.getPath(TDMS_PATH)
+
+    for tdms_filename in tdms_files:
+        tdms_path = tdms_dir + tdms_filename
+        channel_data = nf.tdms_to_numpy(tdms_path)
+
+        # Split up channel data into arrays of size INPUT_SIZE
+        
+        total_samples = channel_data.size
+        index = 0
+        while index + INPUT_SIZE * 2 * NAVG < total_samples:
+            if "secure" in tdms_filename:
+                output_data = 0
+            else:
+                output_data = 1
+
+            for avg_offset in range(NAVG):
+                #print("fn=%s, index=%d, class=%d" % (tdms_filename, index, output_data))
+                # Input data is the fft of the selected portion of the wave input
+                if USE_FFT:
+                    this_data = np.absolute(np.fft.fft(channel_data[(index+INPUT_SIZE*avg_offset) : (index+INPUT_SIZE*avg_offset + INPUT_SIZE * 2)]))[0:INPUT_SIZE]
+                else:
+                    this_data = channel_data[(index) : (index + INPUT_SIZE * 2)]
+                
+                this_data[0]=0
+
+                if (avg_offset == 0):
+                    input_data = np.array([this_data])
+                else:
+                    input_data += np.array([this_data])
+
+            # Add data to the dataset
+            x = np.append(x, [input_data], axis=0)
+            y = np.append(y, [output_data], axis=0)
+
+            # Increment index and repeat for next section
+            index = index + INPUT_SIZE * 2
+        
+        # Remove blank entries from initilization
+        x = np.delete(x, 0, axis=0)
+        y = np.delete(y, 0, axis=0)
+
+        # Create tensorflow dataset objects
+        ds = tf.data.Dataset.from_tensor_slices(x, y)
+        ds = ds.batch(batch_size=25)
+
+        # Convert dataset to a list to inspect structure
+        data_list = list(ds.as_numpy_iterator())
+
+        # Extract data and labels based on inspected structure
+        inputs = np.array([item[0][0] for item in data_list])  
+        labels = np.array([item[1][0] for item in data_list]) 
+
+        # Make predictions
+        predictions = model.predict(inputs)
+        print(predictions)
+
+def generate_confusion_mtx():
+    # Load the model
+    model = tf.keras.models.load_model(nf.getPath(MODEL_PATH))
+
+    # Load the test data
+    test_data = tf.data.Dataset.load(nf.getPath("../datasets/train"))
+
+    # Convert dataset to a list to inspect structure
+    test_data_list = list(test_data.as_numpy_iterator())
+
+    # Extract data and labels based on inspected structure
+    test_inputs = np.array([item[0][0] for item in test_data_list])  
+    test_labels = np.array([item[1][0] for item in test_data_list])  
+
+    # Restore the latest checkpoint
+    latest_checkpoint = nf.getPath(CP_PATH)
+    model.load_weights(latest_checkpoint)
+
+    # Make predictions
+    predictions = model.predict(test_inputs)
+    predicted_classes = np.argmax(predictions, axis=1)
+
+    # Generate the confusion matrix
+    conf_matrix = confusion_matrix(test_labels, predicted_classes)
+
+    # Plot the confusion matrix
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=["secure", "compromised"], yticklabels=["secure", "compromised"])
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.title('Confusion Matrix')
+    plt.show()
+    return
+
+if __name__ == "__main__":
+    tdms_files = [
+        "compromised_01"
+    ]
+
+    find_misclassifications(tdms_files)
