@@ -14,7 +14,7 @@ from plot import plotTraining
 ############
 # CONSTANTS:
 ############
-NUM_EPOCHS = 50
+NUM_EPOCHS = 100
 
 #######
 # MAIN:
@@ -38,12 +38,12 @@ model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=Tru
 
 # Load weights from previous checkpoint
 
-#old_checkpoint_path = nf.getPath("../checkpoints/40.weights.h5")
-#model.load_weights(old_checkpoint_path)
+old_checkpoint_path = nf.getPath("../checkpoints/5_2.weights.h5")
+model.load_weights(old_checkpoint_path)
 
 # Prepare saving of checkpoints
 
-checkpoint_path = nf.getPath("../checkpoints/5.weights.h5")
+checkpoint_path = nf.getPath("../checkpoints/5_3.weights.h5")
 
 cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)
 
